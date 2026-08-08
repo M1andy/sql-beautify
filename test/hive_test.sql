@@ -129,3 +129,28 @@ set hive.exec.dynamic.partition.mode=nonstrict;
 select /*+ mapjoin(dim) */ a.id,b.name from dws.orders a join dim.user b on a.user_id=b.id;
 
 select concat(a,'_',b) as ab,split(s,',') as arr,get_json_object(js,'$.name') as nm,regexp_replace(s,'\\d','') as cleaned,datediff('2024-01-02','2024-01-01') as diff,nvl(a,0) as a1,coalesce(a,b,0) as a2,cast(a as string) as a3,if(flag=1,'y','n') as f,floor(1.9) as fl,ceil(1.1) as ce,round(1.234,2) as rd,date_format(dt,'yyyy-MM-dd') as df,to_date(dt) as td,unix_timestamp(dt,'yyyy-MM-dd HH:mm:ss') as ts,from_unixtime(ts) as fu from ods.tmp;
+
+-- ============================================================
+-- 12. 注释 Comment
+-- ============================================================
+select a from t -- 这里 SELECT 和 WHERE 是注释
+where b=1;
+
+select a,b from t -- a,b,c (内容) 注释
+where b=1;
+
+select a -- 注释
+,b from t;
+
+select a, -- 注释
+b from t;
+
+select a from t; -- 注释;分号
+
+select a from t; -- it's done, ok
+
+/* select * from x where y=1 */
+select a from t;
+
+-- 注释
+insert into table t values(1);

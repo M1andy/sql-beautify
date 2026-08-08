@@ -404,3 +404,41 @@ SELECT  CONCAT(a,'_',b)                          AS ab
        ,FROM_UNIXTIME(ts)                        AS fu
 FROM ods.tmp
 ;
+
+-- ============================================================
+-- 12. 注释 Comment
+-- ============================================================
+SELECT  a
+FROM t -- 这里 SELECT 和 WHERE 是注释
+WHERE b = 1
+;
+
+SELECT  a
+       ,b
+FROM t -- a,b,c (内容) 注释
+WHERE b = 1
+;
+
+SELECT  a -- 注释
+       ,b
+FROM t
+;
+
+SELECT  a -- 注释
+       ,b
+FROM t
+;
+
+SELECT  a
+FROM t; -- 注释;分号
+
+SELECT  a
+FROM t; -- it's done, ok
+
+/* select * from x where y=1 */
+SELECT  a
+FROM t
+;
+
+-- 注释
+INSERT INTO TABLE t VALUES(1);
