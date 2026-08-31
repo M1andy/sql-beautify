@@ -1,0 +1,33 @@
+name: Package VSIX
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # node_modules/vkbeautify 是 git 跟踪的 vendored 引擎，checkout 后即就位。
+      # 不要 npm install：会从 registry 拉官方 vkbeautify 覆盖本仓库的修改。
+      - name: Run golden tests
+        run: node test/run-tests.js
+
+      - name: Package VSIX
+        run: npx --yes @vscode/vsce package
+
+      - name: Upload VSIX artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vscode-sql-beautify-vsix
+          path: "*.vsix"
+          if-no-files-found: error
