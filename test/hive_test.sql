@@ -154,3 +154,20 @@ select a from t;
 
 -- 注释
 insert into table t values(1);
+
+-- ============================================================
+-- 13. IN 列表换行 IN list wrapping
+-- ============================================================
+select id,status from dws.orders where status in('paid','refunded','chargeback','failed','pending','cancelled','processing','shipped','returned','expired','unknown','reversed') and id>100;
+
+select id from dws.orders where id not in(10001,10002,10003,10004,10005,10006,10007,10008,10009,10010,10011,10012,10013,10014,10015,10016,10017,10018,10019,10020);
+
+select a from t where x in(1,2,3,case when y=1 then 4 when y=2 then 5 else 6 END,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30);
+
+select a from t where x in(select id from dim_user where dt='2024-01-01' and type in('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t') and status=1);
+
+select a from t where (type in('aa','bb','cc','dd','ee','ff','gg','hh','ii','jj','kk','ll','mm','nn','oo','pp','qq','rr','ss','tt') OR level in(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)) and b=1;
+
+select a from t where tag in('beijing,chaoyang','shanghai,pudong','guangzhou,tianhe','shenzhen,nanshan','hangzhou,xihu','chengdu,wuhou','wuhan,hongshan','xian,yanta','nanjing,jianye','suzhou,gusu','chongqing,yubei','tianjin,hexi','jinan,lixia','fuzhou,cangshan','changsha,yuelu','zhengzhou,jinshui','hefei,baohe','kunming,panlong','guiyang,nanshan','haikou,meilan');
+
+select a from t where x in(1,2,3) and y not in(4,5);

@@ -84,7 +84,7 @@ function parseBlocks(lines) {
 function formatStatement(text) {
 	return DDL_RE.test(text)
 		? vkbeautify.sqlddl(text)
-		: vkbeautify.sql(text, true, false, true, 150);
+		: vkbeautify.sql(text, true, false, true, 150, 150);
 }
 
 /**

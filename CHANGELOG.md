@@ -1,6 +1,10 @@
 
 ## 😎 更迭日志 Release Notes
 
+### 0.3.23 (2026/09/01)
+* 新增 IN/NOT IN 列表超长自动换行：格式化后行长度超过 `extension.in_wrap_length`（默认 150，0 关闭）时，按逗号每项一行块状对齐展开，支持行尾逗号模式与小写关键词模式
+* Add wrapping for overlong IN/NOT IN lists: when a formatted line exceeds `extension.in_wrap_length` (default 150, 0 disables), the list is split one item per line in block style, with trailing-comma and lowercase-keyword modes supported
+
 ### 0.3.22 (2023/08/26)
 * 修正了一些BUG
 * FIx some bugs

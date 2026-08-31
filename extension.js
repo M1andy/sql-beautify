@@ -50,29 +50,24 @@ function activate(context) {
 
 			// Beautify each selection and replace it with the formatted result.
 			vscode.window.activeTextEditor.edit(function (builder) {
+				var config = vscode.workspace.getConfiguration("extension");
+				var uppercase = config.get("uppercase"); // Convert keywords to uppercase
+				var comma_location = config.get("comma_location"); // Comma position (end of line)
+				var bracket_char = config.get("bracket_char"); // Tab vs. space indentation
+				var as_loc_cnt = config.get("as_loc_cnt"); // Max column length participating in AS alignment
+				var in_wrap_length = config.get("in_wrap_length"); // Max line length before an IN list is wrapped
 				for (var i = 0; i < selections.length; i++) {
 					var range = selections[i];
 					var text = vscode.window.activeTextEditor.document
 						.getText(range)
 						.toString();
-					var uppercase = vscode.workspace
-						.getConfiguration("extension")
-						.get("uppercase"); // Convert keywords to uppercase
-					var comma_location = vscode.workspace
-						.getConfiguration("extension")
-						.get("comma_location"); // Comma position (end of line)
-					var bracket_char = vscode.workspace
-						.getConfiguration("extension")
-						.get("bracket_char"); // Tab vs. space indentation
-					var as_loc_cnt = vscode.workspace
-						.getConfiguration("extension")
-						.get("as_loc_cnt"); // Max column length participating in AS alignment
 					var bt = vkbeautify.sql(
 						text,
 						uppercase,
 						comma_location,
 						bracket_char,
 						as_loc_cnt,
+						in_wrap_length,
 					);
 					builder.replace(range, bt);
 				}

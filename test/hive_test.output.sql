@@ -442,3 +442,179 @@ FROM t
 
 -- 注释
 INSERT INTO TABLE t VALUES(1);
+
+-- ============================================================
+-- 13. IN 列表换行 IN list wrapping
+-- ============================================================
+SELECT  id
+       ,status
+FROM dws.orders
+WHERE status IN
+    (
+        'paid'
+        ,'refunded'
+        ,'chargeback'
+        ,'failed'
+        ,'pending'
+        ,'cancelled'
+        ,'processing'
+        ,'shipped'
+        ,'returned'
+        ,'expired'
+        ,'unknown'
+        ,'reversed'
+    )
+AND id > 100
+;
+
+SELECT  id
+FROM dws.orders
+WHERE id NOT IN
+    (
+        10001
+        ,10002
+        ,10003
+        ,10004
+        ,10005
+        ,10006
+        ,10007
+        ,10008
+        ,10009
+        ,10010
+        ,10011
+        ,10012
+        ,10013
+        ,10014
+        ,10015
+        ,10016
+        ,10017
+        ,10018
+        ,10019
+        ,10020
+    )
+;
+
+SELECT  a
+FROM t
+WHERE x IN
+    (
+        1
+        ,2
+        ,3
+        ,CASE WHEN y = 1 THEN 4 WHEN y = 2 THEN 5 ELSE 6 END
+        ,7
+        ,8
+        ,9
+        ,10
+        ,11
+        ,12
+        ,13
+        ,14
+        ,15
+        ,16
+        ,17
+        ,18
+        ,19
+        ,20
+        ,21
+        ,22
+        ,23
+        ,24
+        ,25
+        ,26
+        ,27
+        ,28
+        ,29
+        ,30
+    )
+;
+
+SELECT  a
+FROM t
+WHERE x IN ( SELECT id FROM dim_user WHERE dt = '2024-01-01' AND type IN ('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't') AND status = 1)
+;
+
+SELECT  a
+FROM t
+WHERE (type IN
+    (
+        'aa'
+        ,'bb'
+        ,'cc'
+        ,'dd'
+        ,'ee'
+        ,'ff'
+        ,'gg'
+        ,'hh'
+        ,'ii'
+        ,'jj'
+        ,'kk'
+        ,'ll'
+        ,'mm'
+        ,'nn'
+        ,'oo'
+        ,'pp'
+        ,'qq'
+        ,'rr'
+        ,'ss'
+        ,'tt'
+    )
+OR level IN
+    (
+        1
+        ,2
+        ,3
+        ,4
+        ,5
+        ,6
+        ,7
+        ,8
+        ,9
+        ,10
+        ,11
+        ,12
+        ,13
+        ,14
+        ,15
+        ,16
+        ,17
+        ,18
+        ,19
+        ,20
+    )
+)
+AND b = 1
+;
+
+SELECT  a
+FROM t
+WHERE tag IN
+    (
+        'beijing,chaoyang'
+        ,'shanghai,pudong'
+        ,'guangzhou,tianhe'
+        ,'shenzhen,nanshan'
+        ,'hangzhou,xihu'
+        ,'chengdu,wuhou'
+        ,'wuhan,hongshan'
+        ,'xian,yanta'
+        ,'nanjing,jianye'
+        ,'suzhou,gusu'
+        ,'chongqing,yubei'
+        ,'tianjin,hexi'
+        ,'jinan,lixia'
+        ,'fuzhou,cangshan'
+        ,'changsha,yuelu'
+        ,'zhengzhou,jinshui'
+        ,'hefei,baohe'
+        ,'kunming,panlong'
+        ,'guiyang,nanshan'
+        ,'haikou,meilan'
+    )
+;
+
+SELECT  a
+FROM t
+WHERE x IN (1, 2, 3)
+AND y NOT IN (4, 5)
+;
