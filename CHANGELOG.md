@@ -1,6 +1,12 @@
 
 ## 😎 更迭日志 Release Notes
 
+### 0.3.25 (2026/09/01)
+* 新增超长括号条件组块状换行：WHERE/AND/OR/NOT 等关键词独行，( 与 ) 独立成行与语句对齐，各条件 +4 缩进且 OR/AND 前缀对齐首条件；混合逻辑只拆顶层 OR（AND 子句保持整体），无顶层 OR 时按 AND 拆分；阈值复用 `extension.in_wrap_length`
+* Add block-style wrapping for overlong parenthesized condition groups: the clause keyword stays on its own line, "(" and ")" align with the statement, and each condition is indented one level with its OR/AND prefix aligned to the first condition; mixed logic splits only top-level ORs (AND sub-expressions stay whole) and groups without a top-level OR split at ANDs; the threshold reuses `extension.in_wrap_length`
+* 守卫：IN (...) / EXISTS (...) / IF(...) 与函数参数括号不参与拆分，短行保持单行
+* Guards: IN (...) / EXISTS (...) / IF(...) and function-call parentheses are never split, and short lines keep the group inline
+
 ### 0.3.24 (2026/09/01)
 * IN/NOT IN/EXISTS (SELECT ...) 子查询按 FROM 子查询同款块状展开；IN 列表换行样式调整（括号与语句对齐、条目一级缩进）
 * Expand IN / NOT IN / EXISTS (SELECT ...) subqueries into blocks like FROM subqueries; adjust wrapped IN-list style (parens aligned with the statement, items at one indent level)
