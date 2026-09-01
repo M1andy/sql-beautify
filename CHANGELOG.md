@@ -1,6 +1,18 @@
 
 ## 😎 更迭日志 Release Notes
 
+### 0.3.24 (2026/09/01)
+* IN/NOT IN/EXISTS (SELECT ...) 子查询按 FROM 子查询同款块状展开；IN 列表换行样式调整（括号与语句对齐、条目一级缩进）
+* Expand IN / NOT IN / EXISTS (SELECT ...) subqueries into blocks like FROM subqueries; adjust wrapped IN-list style (parens aligned with the statement, items at one indent level)
+* HAVING 多条件按 AND 逐行拆分，与 WHERE 风格一致；超长窗口 OVER 子句块状展开（相对表达式列缩进）
+* Split HAVING conditions per AND line like WHERE; wrap overlong OVER clauses in block style, indented relative to the expression column
+* CREATE EXTERNAL/TEMPORARY TABLE 走 DDL 格式化通道；修复分区列 COMMENT 误断行与无注释列补空 COMMENT '' 的问题
+* Route CREATE EXTERNAL/TEMPORARY TABLE through the DDL formatter; fix partition COMMENT line break and drop the empty COMMENT '' for columns without comments
+* 关键字大写改为关键字表统一遍历：新增 exists/range/following/sort by/cluster by/outer/mod/日期时间类/LEFT SEMI JOIN 等规则；修复 LEFT SEMI JOIN 断行、ORDER BY 双空格、列名 partition_col 前缀误大写
+* Unify keyword uppercasing into a keyword-table pass, adding exists / range / following / sort by / cluster by / outer / mod / date-time literals / LEFT SEMI JOIN; fix LEFT SEMI JOIN line break, ORDER BY double spaces and partition_col prefix uppercasing
+* CI：仅 v* 标签触发打包，并将 vsix 发布到 GitHub Release
+* CI: package only on v* tag push and publish the vsix to GitHub Releases
+
 ### 0.3.23 (2026/09/01)
 * 新增 IN/NOT IN 列表超长自动换行：格式化后行长度超过 `extension.in_wrap_length`（默认 150，0 关闭）时，按逗号每项一行块状对齐展开，支持行尾逗号模式与小写关键词模式
 * Add wrapping for overlong IN/NOT IN lists: when a formatted line exceeds `extension.in_wrap_length` (default 150, 0 disables), the list is split one item per line in block style, with trailing-comma and lowercase-keyword modes supported
