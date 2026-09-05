@@ -1,6 +1,10 @@
 
 ## 😎 更迭日志 Release Notes
 
+### 0.3.26 (2026/09/05)
+* 新增 Velocity #set 指令格式化：指令名统一小写，括号内侧各留一个空格，= 两侧不留空格，行尾分号移除，多条指令各自独占一行且行间无空行；字符串与常数字面量原样保留，字面量或注释中的 #set 文本不受影响，撞关键字的变量名（如 date）不被大写
+* Add formatting for Velocity #set directives: lowercase directive name, exactly one space of padding inside the parentheses, no spaces around =, trailing semicolon removed, one directive per line with no blank lines between them; string and numeric literals are kept verbatim, #set text inside literals or comments is untouched, and keyword-colliding variable names (e.g. date) are never uppercased
+
 ### 0.3.25 (2026/09/01)
 * 新增超长括号条件组块状换行：WHERE/AND/OR/NOT 等关键词独行，( 与 ) 独立成行与语句对齐，各条件 +4 缩进且 OR/AND 前缀对齐首条件；混合逻辑只拆顶层 OR（AND 子句保持整体），无顶层 OR 时按 AND 拆分；阈值复用 `extension.in_wrap_length`
 * Add block-style wrapping for overlong parenthesized condition groups: the clause keyword stays on its own line, "(" and ")" align with the statement, and each condition is indented one level with its OR/AND prefix aligned to the first condition; mixed logic splits only top-level ORs (AND sub-expressions stay whole) and groups without a top-level OR split at ANDs; the threshold reuses `extension.in_wrap_length`
