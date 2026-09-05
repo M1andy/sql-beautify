@@ -11,3 +11,7 @@ _Avoid_: value list, in-clause items
 **IN wrap threshold（IN 换行阈值）**:
 The maximum formatted line length beyond which an IN list is wrapped one item per line, block-indented. Zero or negative disables wrapping.
 _Avoid_: line limit, max length
+
+**#set 指令（Velocity set directive）**:
+A Velocity template assignment directive embedded ahead of a SQL statement, assigning a string literal or a numeric constant to a template variable. Its formatted form is `#set( … )` — lowercase directive name, exactly one space of padding inside the parentheses, no spaces around `=`, no trailing semicolon, one directive per line.
+_Avoid_: set statement, variable assignment

@@ -59,3 +59,23 @@ select id,sum(amount) over (partition by user_id_first_col, second_partition_col
 -- @case 回归抽查：EXTERNAL DDL 格式化
 -- @expect EXTERNAL 表走 DDL 通道，列定义对齐、分区注释不断行、表级子句逐段换行
 create external table if not exists dws.order_pay_detail (order_id bigint comment '订单ID',user_id bigint comment '用户ID',pay_amount decimal(16,2) comment '支付金额',pay_channel string,pay_time string) comment '订单支付明细表' partitioned by (dt string comment '业务日期') clustered by (user_id) sorted by (pay_time desc) into 8 buckets stored as orc location '/warehouse/dws/db/order_pay_detail' tblproperties ('orc.compress'='SNAPPY');
+
+-- ============================================================
+-- SQL Beautify 人工验证样例 第 4 轮（Velocity #set 指令专项）
+-- ============================================================
+
+-- @case #set 指令归一：大小写、括号空格、= 收紧、独立成行
+-- @expect #set 小写，括号内侧各一空格，= 两侧无空格，每条指令独占一行且行间无空行
+#SET(a='123') #set( b = '456' ) #Set(c=789)
+select order_id from dws.order_detail where dt='2024-08-01' limit 100;
+
+-- @case #set 指令：字面量为字符串或常数
+-- @expect 字符串与常数原样保留；撞关键字的变量名（date）不被大写；字面量内的 = 不受影响
+#set( date = '2024-08-01' )
+#set( x = 'a=b' )
+#set( limit_days = 30 )
+select order_id from dws.order_detail where dt='2024-08-01' limit 100;
+
+-- @case #set 指令：字符串与注释中的 #set 不受影响
+-- @expect 字面量与 -- 注释里的 #set(...) 文本原样保留，不拆行不改写
+select a from t where c = '#set(x=1)'; -- #set(y=2)

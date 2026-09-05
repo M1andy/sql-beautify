@@ -171,3 +171,16 @@ select a from t where (type in('aa','bb','cc','dd','ee','ff','gg','hh','ii','jj'
 select a from t where tag in('beijing,chaoyang','shanghai,pudong','guangzhou,tianhe','shenzhen,nanshan','hangzhou,xihu','chengdu,wuhou','wuhan,hongshan','xian,yanta','nanjing,jianye','suzhou,gusu','chongqing,yubei','tianjin,hexi','jinan,lixia','fuzhou,cangshan','changsha,yuelu','zhengzhou,jinshui','hefei,baohe','kunming,panlong','guiyang,nanshan','haikou,meilan');
 
 select a from t where x in(1,2,3) and y not in(4,5);
+
+-- ============================================================
+-- 14. Velocity #set 指令 Velocity set directives
+-- ============================================================
+#SET(a='123')
+#set( b = '456' )
+#set(c=789)
+#set(d=1.5) #SET(e='2024-01-01')
+select order_id, user_name from dws.order_detail where dt = '2024-01-01' limit 100;
+
+#set( date = '2024-01-01' )
+#set( x = 'a=b' )
+select id,status from dws.orders where dt='2024-01-01' and status in('paid','refunded') limit 10;

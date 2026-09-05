@@ -625,3 +625,28 @@ FROM t
 WHERE x IN (1, 2, 3)
 AND y NOT IN (4, 5)
 ;
+
+-- ============================================================
+-- 14. Velocity #set 指令 Velocity set directives
+-- ============================================================
+#set( a='123' )
+#set( b='456' )
+#set( c=789 )
+#set( d=1.5 )
+#set( e='2024-01-01' )
+SELECT  order_id
+       ,user_name
+FROM dws.order_detail
+WHERE dt = '2024-01-01'
+LIMIT 100
+;
+
+#set( date='2024-01-01' )
+#set( x='a=b' )
+SELECT  id
+       ,status
+FROM dws.orders
+WHERE dt = '2024-01-01'
+AND status IN ('paid', 'refunded')
+LIMIT 10
+;

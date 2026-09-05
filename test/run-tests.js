@@ -144,6 +144,73 @@ function normalize(text) {
 	return text.replace(/\r\n/g, "\n");
 }
 
+/**
+ * Inline cases for Velocity #set directive formatting (see CONTEXT.md:
+ * #set 指令). Cases whose directive line carries a trailing ";" cannot live
+ * in hive_test.sql: parseBlocks closes a statement block on any line
+ * containing ";", which would isolate the directive into its own block and
+ * force the blank-line statement separation the directive style forbids.
+ */
+const DIRECTIVE_CASES = [
+	{
+		name: "uppercase name lowercased, paren padding, trailing ; removed",
+		input: "#SET(a='123');\nselect 1 from t;",
+		expected: "#set( a='123' )\nSELECT  1\nFROM t\n;\n\n",
+	},
+	{
+		name: "numeric constant kept, = compacted",
+		input: "#set( b = 456 )\nselect 1 from t;",
+		expected: "#set( b=456 )\nSELECT  1\nFROM t\n;\n\n",
+	},
+	{
+		name: "several directives on one line split onto their own lines",
+		input: "#set(a='1'); #set(b=2); select 1 from t;",
+		expected: "#set( a='1' )\n#set( b=2 )\nSELECT  1\nFROM t\n;\n\n",
+	},
+	{
+		name: "keyword-colliding variable name stays untouched",
+		input: "#set( date = '2024-01-01' )\nselect 1 from t;",
+		expected: "#set( date='2024-01-01' )\nSELECT  1\nFROM t\n;\n\n",
+	},
+	{
+		name: "= inside string literal preserved",
+		input: "#set( x = 'a=b' )\nselect 1 from t;",
+		expected: "#set( x='a=b' )\nSELECT  1\nFROM t\n;\n\n",
+	},
+	{
+		name: "#set inside string literal / -- comment left as-is",
+		input: "select a from t where c = '#set(x=1)'; -- #set(y=2)",
+		expected: "SELECT  a\nFROM t\nWHERE c = '#set(x=1)'; -- #set(y=2)\n",
+	},
+	{
+		name: "directives keep literal restoration aligned for later literals",
+		input: "#set( a='1' )\nselect a from t where b = 'B' and c = 'C';",
+		expected:
+			"#set( a='1' )\nSELECT  a\nFROM t\nWHERE b = 'B'\nAND c = 'C'\n;\n\n",
+	},
+];
+
+/**
+ * Format every directive case with the default style and compare with the
+ * expected output.
+ *
+ * @returns {number} Number of failed cases.
+ */
+function runDirectiveCases() {
+	let failed = 0;
+	for (const c of DIRECTIVE_CASES) {
+		const actual = vkbeautify.sql(c.input, true, false, true, 150, 150);
+		if (actual !== c.expected) {
+			failed++;
+			console.log("FAIL directive case: " + c.name);
+			console.log("  input   : " + JSON.stringify(c.input));
+			console.log("  actual  : " + JSON.stringify(actual));
+			console.log("  expected: " + JSON.stringify(c.expected));
+		}
+	}
+	return failed;
+}
+
 const inputText = normalize(fs.readFileSync(INPUT, "utf8"));
 const goldenText = normalize(fs.readFileSync(GOLDEN, "utf8"));
 
@@ -151,10 +218,15 @@ const blocks = parseBlocks(inputText.split("\n"));
 const actual = buildOutput(blocks);
 
 const statementCount = blocks.filter((b) => !b.raw).length;
+const directiveFailures = runDirectiveCases();
 
-if (compare(actual, goldenText)) {
+if (directiveFailures === 0 && compare(actual, goldenText)) {
 	console.log(
-		"PASS: " + statementCount + " statements formatted, output matches " +
+		"PASS: " +
+			DIRECTIVE_CASES.length +
+			" directive cases, " +
+			statementCount +
+			" statements formatted, output matches " +
 			path.basename(GOLDEN),
 	);
 	process.exit(0);
